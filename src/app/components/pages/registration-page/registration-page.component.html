@@ -1,0 +1,36 @@
+<mat-card>
+  <h4>Registration</h4>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field>
+      <input matInput placeholder="First Name" formControlName="firstName" required/>
+      <mat-error *ngIf="fh.hasError(form, 'firstName')">{{fh.getError(form, 'firstName')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Last Name" formControlName="lastName" required/>
+      <mat-error *ngIf="fh.hasError(form, 'lastName')">{{fh.getError(form, 'lastName')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Email" formControlName="email" required/>
+      <mat-error *ngIf="fh.hasError(form, 'email')">{{fh.getError(form, 'email')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Group Code" formControlName="group" required/>
+      <mat-error *ngIf="fh.hasError(form, 'group')">{{fh.getError(form, 'group')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password" formControlName="password" required type="password"/>
+      <mat-error *ngIf="fh.hasError(form, 'password')">{{fh.getError(form, 'password')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Confirm Password" formControlName="confirmPassword" required type="password"/>
+      <mat-error *ngIf="fh.hasError(form, 'confirmPassword')">{{fh.getError(form, 'confirmPassword')}}</mat-error>
+    </mat-form-field>
+    <div class="controls">
+      <button mat-raised-button color="primary" type="submit">Register Me</button>
+    </div>
+    <a routerLink="/login">
+      <button mat-button color="primary">Back to Login</button>
+    </a>
+  </form>
+</mat-card>
+<ac-spinner message="Registration..." *ngIf="authSelectors.isRegistrationFetching$ | async"></ac-spinner>

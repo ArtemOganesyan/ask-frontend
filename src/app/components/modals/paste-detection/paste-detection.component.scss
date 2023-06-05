@@ -1,0 +1,19 @@
+@import "../../../../colors";
+
+table {
+  th {
+    text-align: left;
+    color: $gray;
+    font-weight: 400;
+    padding-top: 1em;
+    font-size: 0.8em;
+  }
+
+  td:first-of-type {
+    padding-right: 3em;
+  }
+}
+
+button {
+  margin: 1em auto 0;
+}

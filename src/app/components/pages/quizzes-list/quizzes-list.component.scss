@@ -1,0 +1,57 @@
+@import "../../../../colors";
+
+.page {
+  display: flex;
+  flex-direction: column;
+  max-width: 40em;
+  margin: 1.5em auto;
+  height: 100%;
+
+  .quizzes {
+    min-width: 40em;
+    flex: 1;
+    overflow: auto;
+    padding: 0.25em;
+    box-sizing: border-box;
+  }
+
+  .mat-expansion-panel {
+
+    &.mat-expanded {
+      border: 1px solid lightgray;
+      position: relative;
+    }
+
+    mat-panel-title {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    mat-panel-description {
+      display: block;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .horizontal-group {
+      padding-top: 1em;
+
+      .buttons {
+        flex: 0 0 8em;
+        text-align: center;
+
+        & > * {
+          display: inline-block;
+          margin: 0.25em 0;
+        }
+      }
+
+    }
+
+  }
+
+}
+
+

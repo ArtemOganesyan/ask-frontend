@@ -1,0 +1,8 @@
+<h1 mat-dialog-title *ngIf="!data.title">Notification</h1>
+<h1 mat-dialog-title *ngIf="data.title">{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.text}}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" color="primary">{{data.action}}</button>
+</div>

@@ -1,0 +1,105 @@
+@import "../../../../colors";
+
+$size: 16px;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  width: 57em;
+  margin: 0 auto;
+  max-height: 80%;
+
+  h2, h4 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+
+    mat-icon, img {
+      width: $size*2;
+      height: $size*2;
+      font-size: $size*2;
+      margin-right: $size/2;
+    }
+  }
+
+  h4 {
+    text-align: right;
+    flex: 0 0 2em;
+  }
+
+  .mat-divider {
+    margin-top: 0.5em;
+    position: inherit;
+  }
+
+  .user-meta {
+    margin: 1em 0;
+    .left {
+      table {
+        width: 100%;
+      }
+    }
+
+    .right {
+      flex: 0 0 10em;
+      text-align: right;
+    }
+  }
+
+  .empty-assignments {
+    flex: 1;
+    overflow-y: auto;
+    text-align: center;
+    margin: 2em 0;
+    font-style: italic;
+    color: $gray;
+  }
+
+  .container {
+    overflow-y: auto;
+
+    table {
+      width: 100%;
+      margin-top: 0.5em;
+
+      th {
+        text-align: left;
+        color: $gray;
+        font-weight: 400;
+        padding-top: 1em;
+        font-size: 0.8em;
+      }
+
+      td {
+        padding: 0.5em 3em 0.5em 0;
+
+        &:last-of-type {
+          padding: 0;
+        }
+
+        &.control {
+          text-align: right;
+        }
+
+        &.status span{
+          padding: 0.25em 0.5em;
+          border-radius: 0.25em;
+          color: $white;
+          font-weight: 800;
+        }
+
+        &.status span{
+          padding: 0.25em 0.5em;
+          border-radius: 0.25em;
+          color: $white;
+          font-weight: 800;
+        }
+      }
+    }
+
+  }
+}

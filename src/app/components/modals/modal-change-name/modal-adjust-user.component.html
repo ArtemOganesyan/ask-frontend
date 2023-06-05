@@ -1,0 +1,13 @@
+<form [formGroup]="form">
+  <h1 mat-dialog-title>{{data.title}}</h1>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input matInput [placeholder]="data.label" formControlName="name" required/>
+      <mat-error *ngIf="fh.hasError(form, 'name')">{{fh.getError(form, 'name')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="null">Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="form.value.name" color="primary" [disabled]="!(form.valid)">Change</button>
+  </div>
+</form>

@@ -1,0 +1,12 @@
+<mat-card class="page">
+  <h4>User's Management</h4>
+  <mat-tab-group [dynamicHeight]="false">
+    <mat-tab label="Students">
+      <ac-users-list [users]="dataSelectors.studentsSortedByName$ | async"></ac-users-list>
+    </mat-tab>
+    <mat-tab label="Teachers">
+      <ac-users-list [users]="dataSelectors.teachersSortedByName$ | async"></ac-users-list>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>

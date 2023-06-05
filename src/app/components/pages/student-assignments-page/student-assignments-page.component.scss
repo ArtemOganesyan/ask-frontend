@@ -1,0 +1,27 @@
+@import "../../../../colors";
+
+.page {
+  display: flex;
+  flex-direction: column;
+  width: 50em;
+  margin: 0 auto 1em;
+
+  h4 {
+    margin: 0 0 1em;
+    display: flex;
+    align-items: center;
+
+  }
+
+  mat-divider {
+    position: inherit;
+  }
+
+  table {
+    td:not(:last-of-type) {
+      //width: 25%;
+      padding: 1em;
+    }
+  }
+
+}

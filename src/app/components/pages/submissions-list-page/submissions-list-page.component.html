@@ -1,0 +1,149 @@
+<mat-card class="page">
+  <h4>Submissions</h4>
+  <mat-tab-group [dynamicHeight]="false" [selectedIndex]="index$ | async" (selectedIndexChange)="navigateToTab($event)">
+    <mat-tab label="For Grade">
+      <table>
+        <tr>
+          <th class="date">Submitted At</th>
+          <th class="group" [matMenuTriggerFor]="options1">
+            <span class="group-label">{{groupFilter$ | async}}<mat-icon>sort</mat-icon></span>
+            <mat-menu #options1="matMenu">
+              <button mat-menu-item *ngFor="let group of giveGroupOptions(dataSelectors.assignmentsToGrade$) | async" (click)="filterByGroup(group)">
+                <span>{{group}}</span>
+              </button>
+            </mat-menu>
+          </th>
+          <th>Student</th>
+          <th>Quiz</th>
+          <th>Auto-Score</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let assignment of applyFilter(dataSelectors.assignmentsToGrade$) | async">
+          <td>{{assignment.submittedTimAsString }}</td>
+          <td>{{getUserGroup(assignment.userId) | async }}</td>
+          <td>{{getUserName(assignment.userId) | async }}</td>
+          <td>{{assignment.quiz.name}}</td>
+          <td>{{assignment.autoGradedPoints}} of {{assignment.quiz.totalScore}}</td>
+          <td class="control">
+            <a [href]="getLink(assignment) | async">
+              <button mat-raised-button color="primary">
+                Grade
+              </button>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <div class="empty-list" *ngIf="(applyFilter(dataSelectors.assignmentsToGrade$) | async).count() === 0">
+        No Submissions
+        <div class="controls" *ngIf="(groupFilter$ | async) !== ALL_GROUPS">
+          <a [href]="'#/submissions/' + (index$ | async)">
+            <button mat-button color="accent">
+              <mat-icon>delete</mat-icon>
+              Remove Filter
+            </button>
+          </a>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Automatically Graded">
+      <table>
+        <tr>
+          <th class="date">Submitted/Graded At</th>
+          <th class="group" [matMenuTriggerFor]="options2">
+            <span class="group-label">{{groupFilter$ | async}}<mat-icon>sort</mat-icon></span>
+            <mat-menu #options2="matMenu">
+              <button mat-menu-item *ngFor="let group of giveGroupOptions(dataSelectors.assignmentsAutoGraded$) | async" (click)="filterByGroup(group)">
+                <span>{{group}}</span>
+              </button>
+            </mat-menu>
+          </th>
+          <th>Student</th>
+          <th>Quiz</th>
+          <th>Status</th>
+          <th>Auto-Score</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let assignment of applyFilter(dataSelectors.assignmentsAutoGraded$) | async">
+          <td>{{assignment.submittedTimAsString }}</td>
+          <td>{{getUserGroup(assignment.userId) | async }}</td>
+          <td>{{getUserName(assignment.userId) | async }}</td>
+          <td >{{assignment.quiz.name}}</td>
+          <td class="status">
+            <span [ngClass]="assignment.isPassed() ? 'passed' : 'failed' ">{{assignment.result}}</span>
+          </td>
+          <td>{{assignment.autoGradedPoints}} of {{assignment.quiz.totalScore}}</td>
+          <td class="control">
+            <a [href]="getLink(assignment) | async">
+              <button mat-raised-button color="primary">
+                Review
+              </button>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <div class="empty-list" *ngIf="(applyFilter(dataSelectors.assignmentsAutoGraded$) | async).count() === 0">
+        No Submissions
+        <div class="controls" *ngIf="(groupFilter$ | async) !== ALL_GROUPS">
+          <a [href]="'#/submissions/' + (index$ | async)">
+            <button mat-button color="accent">
+              <mat-icon>delete</mat-icon>
+              Remove Filter
+            </button>
+          </a>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Reviewed">
+      <table>
+        <tr>
+          <th class="date">Submitted At</th>
+          <th class="date">Graded At</th>
+          <th class="group" [matMenuTriggerFor]="options3">
+            <span class="group-label">{{groupFilter$ | async}}<mat-icon>sort</mat-icon></span>
+            <mat-menu #options3="matMenu">
+              <button mat-menu-item *ngFor="let group of giveGroupOptions(dataSelectors.assignmentsReviewedByTeacher$) | async" (click)="filterByGroup(group)">
+                <span>{{group}}</span>
+              </button>
+            </mat-menu>
+          </th>
+          <th>Student</th>
+          <th>Quiz</th>
+          <th>Status</th>
+          <th>Score</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let assignment of applyFilter(dataSelectors.assignmentsReviewedByTeacher$) | async">
+          <td>{{assignment.submittedTimAsString }}</td>
+          <td>{{assignment.gradedTimeAsString }}</td>
+          <td>{{getUserGroup(assignment.userId) | async }}</td>
+          <td>{{getUserName(assignment.userId) | async }}</td>
+          <td class="quiz-safe-name">{{assignment.quiz.name}}</td>
+          <td class="status">
+            <span [ngClass]="assignment.isPassed() ? 'passed' : 'failed' ">{{assignment.result}}</span>
+          </td>
+          <td class="score">{{assignment.totalGradedPoints}} of {{assignment.quiz.totalScore}}</td>
+          <td class="control">
+            <a [href]="getLink(assignment) | async">
+              <button mat-button color="primary">
+                Review
+              </button>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <div class="empty-list" *ngIf="(applyFilter(dataSelectors.assignmentsReviewedByTeacher$) | async).count() === 0">
+        No Submissions
+        <div class="controls" *ngIf="(groupFilter$ | async) !== ALL_GROUPS">
+          <a [href]="'#/submissions/' + (index$ | async)">
+            <button mat-button color="accent">
+              <mat-icon>delete</mat-icon>
+              Remove Filter
+            </button>
+          </a>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+<ac-spinner *ngIf="dataSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>

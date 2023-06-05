@@ -1,0 +1,17 @@
+<div [formGroup]="questionForm">
+  <mat-form-field class="answer">
+    <textarea matInput placeholder="Enter your answer"
+              formControlName="textAnswer"
+              matTextareaAutosize
+              matAutosizeMinRows="1"
+              [errorStateMatcher]="matcher"
+              acPasteDetection
+              [notCatch]="isPreview"
+              [questionNumber]="questionNumber"
+              [assignmentId]="assignmentId">
+    </textarea>
+    <mat-error *ngIf="fh.hasError(questionForm, 'textAnswer')">
+      {{fh.getError(questionForm, 'textAnswer')}}
+    </mat-error>
+  </mat-form-field>
+</div>

@@ -1,0 +1,26 @@
+mat-card {
+  width: 40em;
+  margin: 0 auto;
+
+  table {
+    td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 0;
+    }
+
+    td:first-of-type {
+      width: 4em;
+    }
+  }
+
+  .right {
+    flex: 0 0 10em;
+
+    button {
+      width: 100%;
+      display: block;
+      margin: 0.5em auto;
+    }
+  }
+}

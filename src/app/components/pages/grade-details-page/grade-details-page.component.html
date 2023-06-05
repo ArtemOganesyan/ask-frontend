@@ -1,0 +1,7 @@
+<ac-grade-form [assignment]="grade$ | async"
+               [users]="users$ | async"
+               [isStudent]="true"
+               backScreen="my-grades"
+               *ngIf="grade$ | async">
+</ac-grade-form>
+<ac-spinner *ngIf="studentSelectors.isGradesLoading$ | async"></ac-spinner>

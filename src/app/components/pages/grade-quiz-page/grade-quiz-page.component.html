@@ -1,0 +1,10 @@
+<ac-grade-form [assignment]="assignment$ | async"
+               [users]="dataSelectors.users$ | async"
+               [backScreen]="backScreen$ | async"
+               (gradeSubmit)="submit($event)"
+               *ngIf="assignment$ | async">
+</ac-grade-form>
+
+<ac-spinner *ngIf="dataSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isAssignmentGrading$ | async"></ac-spinner>

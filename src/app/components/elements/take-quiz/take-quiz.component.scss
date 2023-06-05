@@ -1,0 +1,29 @@
+@import "../../../../colors";
+
+h4 {
+  text-align: center;
+}
+
+mat-card {
+  margin: 1em 0;
+  border: 1px solid lightgray;
+  position: relative;
+
+  h3 {
+    color: $accent;
+  }
+
+  p.show-stopper {
+    font-size: 0.8em;
+    margin-top: 0;
+    padding: 0.25em 0.5em;
+    color: $white;
+    background-color: $error;
+    font-weight: 800;
+    display: inline-block;
+    border-radius: 0.25em;
+    position: absolute;
+    top: 1.5em;
+    right: 1.5em;
+  }
+}

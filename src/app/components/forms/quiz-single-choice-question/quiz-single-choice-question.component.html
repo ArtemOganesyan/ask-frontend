@@ -1,0 +1,27 @@
+<div [formGroup]="questionForm">
+  <mat-radio-group formControlName="answer">
+    <mat-radio-button class="example-radio-button"
+                      *ngFor="let option of question.options;let optionId=index"
+                      [value]="optionId">
+      {{option}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <mat-error *ngIf="fh.hasError(questionForm, 'answer')">
+    {{fh.getError(questionForm, 'answer')}}
+  </mat-error>
+  <mat-form-field *ngIf="question.hasOtherOption">
+    <textarea matInput placeholder="Other"
+              formControlName="textAnswer"
+              matTextareaAutosize
+              matAutosizeMinRows="1"
+              [errorStateMatcher]="matcher"
+              acPasteDetection
+              [notCatch]="isPreview"
+              [questionNumber]="questionNumber"
+              [assignmentId]="assignmentId">
+    </textarea>
+    <mat-error *ngIf="fh.hasError(questionForm, 'textAnswer')">
+      {{fh.getError(questionForm, 'textAnswer')}}
+    </mat-error>
+  </mat-form-field>
+</div>

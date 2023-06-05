@@ -1,0 +1,213 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-card class="header">
+    <div class="horizontal-group">
+      <table>
+        <tr>
+          <td>Quiz:</td>
+          <td class="bold quiz-name">{{assignment.quiz.name}}</td>
+        </tr>
+        <tr>
+          <td>Student:</td>
+          <td class="bold">{{userName}}</td>
+        </tr>
+        <tr>
+          <td>Group:</td>
+          <td class="bold">{{userGroup}}</td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td>Submitted At:</td>
+          <td class="bold">{{assignment.createdMomentAsString}}</td>
+        </tr>
+        <tr>
+          <td>Passing points / percentage:</td>
+          <td class="bold">{{assignment.quiz.passingScore}} of {{assignment.quiz.totalScore}} / {{assignment.quiz.passingPercentage}}%</td>
+        </tr>
+        <tr>
+          <td>Actual points / percentage:</td>
+          <td class="bold">{{assignment.autoGradedPoints + totalAdditionalPoints}} of {{assignment.quiz.totalScore}} / {{totalPercentage}}%</td>
+        </tr>
+      </table>
+      <div class="result">
+        <div class="test-result"
+             [ngClass]="assignment.isPassing(totalAdditionalPoints) && isPassingShowStopper ? 'green' : 'red'">
+          {{assignment.isPassing(totalAdditionalPoints) && isPassingShowStopper ? 'ASSESSMENT PASSED' : 'ASSESSMENT FAILED'}}
+        </div>
+        <div class="failed-show-stopper" *ngIf="!isPassingShowStopper">
+          failed show-stopper*
+        </div>
+      </div>
+
+    </div>
+  </mat-card>
+  <div class="grades" formArray="grades">
+    <div class="question horizontal-group" [formGroup]="form.controls.grades.controls[i]"
+         *ngFor="let question of assignment.quiz.questions; let i=index">
+      <mat-card class="result">
+        <h5>Question {{i + 1}} of {{assignment.quiz.questions.count()}}<span>( {{question.score}} Points Max )</span>
+        </h5>
+        <p class="show-stopper" *ngIf="assignment.quiz.showStopperQuestion === i">Show-Stopper Question</p>
+        <h4>{{question.question}}</h4>
+
+        <!--Textual Question-->
+
+        <div class="answer" *ngIf="question.isTextual()">
+          <div class="label">Answer</div>
+          <mat-icon color="warn" *ngIf="!isStudent && assignment.hasPastesForQuestion(i) && !isStaging" (click)="showPastes(i)">error</mat-icon>
+          {{assignment.answers.get(i).get('textAnswer')}}
+        </div>
+
+
+        <!--Single-Choice Question-->
+
+        <div class="answer" *ngIf="question.isSingleChoice()">
+          <div class="label">Answer</div>
+          <mat-icon color="warn" *ngIf="!isStudent && assignment.hasPastesForQuestion(i) && !isStaging" (click)="showPastes(i)">error</mat-icon>
+          <table>
+            <tr *ngFor="let option of question.options;let optionId=index">
+              <td [ngClass]="{ 'green': optionId === question.answer, 'red': optionId !== question.answer}">
+                <span *ngIf="optionId === assignment.answers.get(i).get('answer')">+{{assignment.scores.get(i)}}</span>
+              </td>
+              <td>
+                <mat-radio-button [checked]="optionId === assignment.answers.get(i).get('answer')"
+                                  [disabled]="true"
+                                  [name]="i">
+                </mat-radio-button>
+              </td>
+              <td
+                [ngClass]="{
+              'crossed': ((optionId === assignment.answers.get(i).get('answer')) && !(optionId === question.answer)),
+              'highlight-green': (optionId === question.answer)
+              }">
+                &nbsp;{{question.options.get(optionId)}}&nbsp;
+              </td>
+            </tr>
+          </table>
+          <div *ngIf="question.hasOtherOption && assignment.answers.get(i).get('textAnswer')">
+            <div class="label">Other:</div>
+            {{assignment.answers.get(i).get('textAnswer')}}
+          </div>
+        </div>
+
+        <div class="answer" *ngIf="question.isMultipleChoice()">
+          <div class="label">Answer</div>
+          <mat-icon color="warn" *ngIf="!isStudent && assignment.hasPastesForQuestion(i) && !isStaging" (click)="showPastes(i)">error</mat-icon>
+          <table>
+            <tr *ngFor="let option of question.options;let optionId=index">
+              <td
+                [ngClass]="{ 'green': question.answers.indexOf(optionId) !== -1, 'red': question.answers.indexOf(optionId) === -1}">
+            <span
+              *ngIf="assignment.answers.get(i).get('answer').indexOf(optionId) !== -1 && question.answers.indexOf(optionId) !== -1">
+              +{{question.getScorePerPoint()}}
+            </span>
+                <span
+                  *ngIf="question.answers.indexOf(optionId) === -1 && assignment.answers.get(i).get('answer').indexOf(optionId) !== -1">
+              -{{question.getScorePerPoint()}}
+            </span>
+              </td>
+              <td>
+                <mat-checkbox [checked]="assignment.answers.get(i).get('answer').indexOf(optionId) !== -1"
+                              [disabled]="true">
+                </mat-checkbox>
+              </td>
+              <td [ngClass]="{
+              'crossed': question.answers.indexOf(optionId) === -1 && assignment.answers.get(i).get('answer').indexOf(optionId) !== -1,
+              'highlight-green': question.answers.indexOf(optionId) !== -1
+              }">
+                {{question.options.get(optionId)}}
+              </td>
+            </tr>
+          </table>
+          <div *ngIf="question.hasOtherOption && assignment.answers.get(i).get('textAnswer')">
+            <div class="label">Other:</div>
+            {{assignment.answers.get(i).get('textAnswer')}}
+          </div>
+        </div>
+        <div class="answer comment" *ngIf="isStudent && assignment.comments.get(i)">
+          <div class="label">Teacher Comment</div>
+          {{assignment.comments.get(i)}}
+        </div>
+        <mat-form-field class="comment" *ngIf="!isStudent">
+          <textarea matInput
+                    placeholder="Teacher Comment"
+                    formControlName="comment"
+                    matTextareaAutosize
+                    matAutosizeMinRows="1">
+          </textarea>
+        </mat-form-field>
+        <div class="total">
+          Points: {{assignment.scores.get(i) + additionalScore(i)}}
+        </div>
+      </mat-card>
+      <mat-card class="grade" *ngIf="!isStudent">
+        <table>
+          <tr>
+            <td>
+              Auto-Graded Points:
+            </td>
+            <td>
+              {{assignment.scores.get(i)}}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Points From Teacher:
+            </td>
+            <td>
+              {{additionalScore(i)}}
+            </td>
+          </tr>
+        </table>
+        <mat-divider></mat-divider>
+        <table>
+          <tr>
+            <td>
+              Total Points:
+            </td>
+            <td>
+              {{ assignment.scores.get(i) + additionalScore(i) }}
+            </td>
+          </tr>
+        </table>
+        <div class="buttons">
+          <button mat-mini-fab color="accent" type="button" [disabled]="!canDecrease(i)" (click)="decrease(i)">-
+          </button>
+          <button mat-mini-fab color="accent" type="button" [disabled]="!canIncrease(i)" (click)="increase(i)">+
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <mat-card class="footer" *ngIf="!isStudent">
+    <div class="horizontal-group">
+      <mat-form-field class="comment">
+        <textarea matInput
+                  placeholder="Teacher Summary"
+                  formControlName="summary"
+                  matTextareaAutosize
+                  matAutosizeMinRows="1">
+        </textarea>
+      </mat-form-field>
+      <div class="buttons">
+        <button mat-raised-button color="primary" type="submit">Save</button>
+        <a [href]="backScreen ? '/#/' + backScreen : '/#/assignments'">
+          <button mat-button color="primary" type="button">Cancel</button>
+        </a>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="student-footer" *ngIf="isStudent">
+    <div class="horizontal-group">
+      <div class="answer" *ngIf="assignment.summary">
+        <div class="label">Summary</div>
+        {{assignment.summary}}
+      </div>
+      <div class="buttons">
+        <a [href]="backScreen ? '/#/' + backScreen : '/#/assignments'">
+          <button mat-raised-button color="primary" type="button">Close</button>
+        </a>
+      </div>
+    </div>
+  </mat-card>
+</form>

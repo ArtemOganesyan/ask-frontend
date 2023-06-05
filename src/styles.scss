@@ -1,0 +1,86 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~@angular/material/theming';
+@import "colors";
+@import "mixins";
+
+@include mat-core();
+
+html, body, body > app-root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+
+    app-root {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.padded {
+  padding: 0 1em;
+}
+
+.controls {
+  margin: 1em 0;
+  text-align: center;
+}
+
+.horizontal-group {
+  display: flex;
+
+  &.horizontal-input-group {
+    margin: 1.5em 0 3em;
+  }
+
+  > * {
+    flex: 1;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+
+  > *:first-child {
+    margin-left: 0;
+  }
+
+  > *:last-child {
+    margin-right: 0;
+  }
+
+  .vertical-divider {
+    flex: 0 0 1px;
+    background: lightgray;
+  }
+}
+
+span.bold {
+  font-weight: 800;
+}
+
+.empty-list {
+  margin: 4em 0;
+  text-align: center;
+  font-style: italic;
+  color: $gray;
+}
+
+span.passed {
+  @include background-opacity($green, 0.65em);
+}
+
+span.failed {
+  @include background-opacity($error, 0.65em)
+}
+
+span.pending {
+  @include background-opacity($primary, 0.65em)
+}
+
+
+

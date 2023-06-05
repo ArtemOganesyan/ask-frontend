@@ -1,0 +1,21 @@
+<mat-card>
+  <h4>Settings</h4>
+  <div class="horizontal-group">
+    <table>
+      <tr>
+        <td>USER:</td>
+        <td>{{authSelectors.activeUserName$ | async}}</td>
+      </tr>
+      <tr>
+        <td>ROLE:</td>
+        <td>{{authSelectors.activeUserRole$ | async}}</td>
+      </tr>
+    </table>
+    <div class="right">
+      <button mat-raised-button color="primary" (click)="changeName()">Change Your Name</button>
+      <button mat-raised-button color="primary" (click)="changePassword()">Change Your Password</button>
+    </div>
+  </div>
+</mat-card>
+
+<ac-spinner *ngIf="authSelectors.isChangingActiveUser$ | async"></ac-spinner>

@@ -1,0 +1,30 @@
+<mat-list>
+  <header class="padded">
+    <img class="icon" src="../../../../assets/logo.png" alt="" *ngIf="authSelectors.activeUserIsTeacher$ | async">
+    <div class="icon" *ngIf="authSelectors.activeUserIsStudent$ | async">
+      <mat-icon mat-list-icon>school</mat-icon>
+    </div>
+    <div class="info">
+      <h3>{{authSelectors.activeUserName$ | async}}</h3>
+      <p>{{authSelectors.activeUserRole$ | async}}</p>
+    </div>
+  </header>
+  <div class="padded">
+    <mat-divider></mat-divider>
+  </div>
+  <a mat-list-item class="mat-primary" [href]="menuItem.link" *ngFor="let menuItem of menu$ | async">
+    <mat-icon mat-list-icon>{{menuItem.icon}}</mat-icon>
+    <h5 mat-line>{{menuItem.name}}</h5>
+  </a>
+  <div class="padded">
+    <mat-divider></mat-divider>
+  </div>
+  <mat-list-item (click)="clickLogOut()">
+    <mat-icon mat-list-icon>power_settings_new</mat-icon>
+    <h5 mat-line>Log Out</h5>
+  </mat-list-item>
+</mat-list>
+<footer class="padded">
+  Assessment Control @ Portnov
+  {{version}}
+</footer>

@@ -1,0 +1,36 @@
+@import "../../../../colors";
+@import "../../../../mixins";
+
+a {
+  text-decoration: navy;
+}
+
+/deep/ .mat-list-item {
+  cursor: pointer;
+  transition: 0.3s all ease-in-out;
+
+  &:hover {
+    @include background-opacity($primary, 0.1);
+  }
+
+  &.image {
+    .mat-list-item-content {
+      padding-left: 4em;
+      position: relative;
+    }
+
+    img {
+      width: 2em;
+      height: 2em;
+      position: absolute;
+      top: 0.5em;
+      left: 1em;
+    }
+  }
+
+  h6 {
+    color: $gray;
+    font-style: italic;
+    font-size: 0.8em !important;
+  }
+}

@@ -1,0 +1,17 @@
+@import "../../../../colors";
+
+mat-radio-group {
+  &.ng-dirty.ng-invalid {
+    color: $error;
+  }
+
+  mat-radio-button {
+    display: block;
+    margin: 0.5em 0;
+  }
+}
+
+mat-error {
+  font-size: 0.8em;
+}
+

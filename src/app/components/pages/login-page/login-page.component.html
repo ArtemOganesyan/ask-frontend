@@ -1,0 +1,29 @@
+<mat-card class="login">
+  <h3>Assessment Control</h3>
+  <h5>Portnov Computer School</h5>
+  <img class="center-logo" src="../../assets/logo.png"/>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field>
+      <input matInput placeholder="Email *" formControlName="email">
+      <mat-error *ngIf="fh.hasError(form, 'email')">{{fh.getError(form, 'email')}}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Password *" formControlName="password" type="password">
+      <mat-error *ngIf="fh.hasError(form, 'password')">{{fh.getError(form, 'password')}}</mat-error>
+    </mat-form-field>
+    <div class="controls">
+      <button mat-raised-button color="primary" type="submit">Sign In</button>
+    </div>
+    <a href="/#/forgot-password">I forgot my password</a>
+  </form>
+</mat-card>
+
+<mat-card class="registration" [ngClass]="{'show': showRegistration}">
+  <h5>Do not have account?</h5>
+  <a routerLink="/registration">
+    <button mat-button color="primary">Register Now</button>
+  </a>
+</mat-card>
+
+<ac-spinner message="Authorization..." *ngIf="authSelectors.isAuthorizing$ | async"></ac-spinner>
+

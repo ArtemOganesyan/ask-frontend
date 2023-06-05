@@ -1,0 +1,11 @@
+<mat-list>
+  <a [href]="'/#/user-details/' + user.id" *ngFor="let user of users" >
+  <mat-list-item [ngClass]="{'image': user.isTeacher}">
+    <mat-icon mat-list-icon *ngIf="user.isStudent">school</mat-icon>
+    <img class="icon" src="../../../../assets/logo.png" *ngIf="user.isTeacher">
+    <h4 mat-line>{{user.name}} <sub>{{user.active}}</sub></h4>
+    <h6 mat-line *ngIf="user.isStudent">Group: {{user.group}}</h6>
+  </mat-list-item>
+  </a>
+</mat-list>
+

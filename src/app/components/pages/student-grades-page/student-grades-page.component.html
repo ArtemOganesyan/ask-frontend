@@ -1,0 +1,38 @@
+<mat-card class="page">
+  <h4>
+    My Grades
+  </h4>
+  <mat-divider></mat-divider>
+  <div class="container">
+    <table>
+      <tr>
+        <th>Submitted At</th>
+        <th>Graded At</th>
+        <th>Quiz</th>
+        <th>Status</th>
+        <th>Score</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let assignment of studentSelectors.grades$|async">
+        <td>{{assignment.submittedTimAsString }}</td>
+        <td>{{assignment.gradedTimeAsString }}</td>
+        <td class="quiz-name">{{assignment.quiz.name}}</td>
+        <td class="result">
+          <span [ngClass]="{'passed': assignment.isPassed(),'failed': assignment.isFailed(),'pending': assignment.isPending()}">
+            {{assignment.result}}
+          </span>
+        </td>
+        <td *ngIf="!assignment.isPending()">{{assignment.totalGradedPoints}} of {{assignment.quiz.totalScore}}</td>
+        <td *ngIf="assignment.isPending()">-</td>
+        <td *ngIf="!assignment.isPending()" class="control">
+          <a [href]="'/#/my-grade-details/' + assignment.id + '?back=my-grades'">
+            <button mat-raised-button color="primary">
+              Details
+            </button>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</mat-card>
+<ac-spinner *ngIf="studentSelectors.isGradesLoading$ | async"></ac-spinner>

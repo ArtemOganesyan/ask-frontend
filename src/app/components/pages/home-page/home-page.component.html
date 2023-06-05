@@ -1,0 +1,13 @@
+<ac-home-teacher *ngIf="authSelectors.activeUserIsTeacher$ | async"
+                 [users]="dataSelectors.users$ | async"
+                 [assignments]="dataSelectors.assignments$ | async"
+></ac-home-teacher>
+<ac-home-student *ngIf="authSelectors.activeUserIsStudent$ | async"
+                 [assignments]="studentSelectors.assignments$ | async"
+                 [grades]="studentSelectors.grades$ | async"
+></ac-home-student>
+
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="studentSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="studentSelectors.isGradesLoading$ | async"></ac-spinner>

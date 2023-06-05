@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Copy & Paste Attempts Detection</h1>
+<div mat-dialog-content>
+  <table>
+    <tr>
+      <th>Time Stamp</th>
+      <th>Value</th>
+    </tr>
+    <tr *ngFor="let paste of data.pastes">
+      <td>{{convertDateToString(paste.createdAt)}}</td>
+      <td>{{paste.value}}</td>
+    </tr>
+  </table>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" color="primary">Close</button>
+</div>

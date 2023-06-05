@@ -1,0 +1,43 @@
+<mat-card>
+  <h4>
+    <mat-icon>school</mat-icon>New Submissions From Students
+  </h4>
+  <p>
+    You have <span class="bold">{{totalSubmissionsToGrade}}</span> new submission(s) that need to be graded.
+    There are also <span class="bold">{{autoGradedSubmissions}}</span> submission(s) that got graded
+    automatically and passed minimum required score, but can be additionally reviewed. Assignments grading and reviewing is available in
+    "Submissions" section.
+  </p>
+  <div class="controls">
+    <a href="/#/submissions/0"><button mat-button color="primary">Go To Submissions</button></a>
+  </div>
+</mat-card>
+
+<mat-card>
+  <h4>
+    <mat-icon>group_add</mat-icon>Assignments Statistics
+  </h4>
+  <p>
+    There are <span class="bold">{{assignments.count()}}</span> assignments in total.
+    <span class="bold">{{assignments.count() - pendingSubmissionAssignments}}</span> was submitted,
+    but <span class="bold">{{pendingSubmissionAssignments}}</span> waiting for student's submission. You are
+    able to review current state and create new assignments in "Assignments" section.
+  </p>
+  <div class="controls">
+    <a href="/#/assignments"><button mat-button color="primary">Go To Assignments</button></a>
+  </div>
+</mat-card>
+
+<mat-card>
+  <h4>
+    <mat-icon>group</mat-icon>Users
+  </h4>
+  <p>
+    This system is used by <span class="bold">{{users.count()}}</span> users.
+    We have <span class="bold">{{teachersCount}}</span> teachers and <span class="bold">{{users.count() - teachersCount}}</span> students.
+    You can observe their stats, change permissions and manage accounts in "Users Management" section.
+  </p>
+  <div class="controls">
+    <a href="/#/users-management"><button mat-button color="primary">Go To Users Management</button></a>
+  </div>
+</mat-card>

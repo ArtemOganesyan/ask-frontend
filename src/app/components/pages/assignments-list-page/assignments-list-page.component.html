@@ -1,0 +1,89 @@
+<mat-card class="page">
+  <h4>List of Assignments</h4>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let group of assignmentGroups">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Assignment Date: {{group.get(0).createDateAsString}}
+        </mat-panel-title>
+        <mat-panel-title>
+          Students: {{group.count()}}
+        </mat-panel-title>
+        <mat-panel-title>
+          Quiz: <span class="quiz-name">{{group.get(0).quiz.name}}</span>
+        </mat-panel-title>
+        <mat-panel-title>
+          <button mat-icon-button color="primary" [matMenuTriggerFor]="options" (click)="$event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #options="matMenu">
+            <button mat-menu-item (click)="deleteAssignment(group.get(0).assignmentGroupID)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete Assignment</span>
+            </button>
+          </mat-menu>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-divider></mat-divider>
+      <table>
+        <tr>
+          <th>
+            Group
+          </th>
+          <th>
+            Student
+          </th>
+          <th>
+            Status
+          </th>
+          <th>
+            Graded By
+          </th>
+        </tr>
+        <tr *ngFor="let assignment of group">
+          <td class="group">
+            {{ getUserGroup(assignment.userId) | async }}
+          </td>
+          <td class="name">
+            {{ getUserName(assignment.userId) | async }}
+          </td>
+          <td class="status">
+            <span
+              [ngClass]="{'passed': assignment.isPassed(), 'failed': assignment.isFailed(), 'pending': assignment.isPending()}">
+              {{ assignment.getAssignmentStatus() }}
+            </span>
+          </td>
+          <td class="graded-by">
+            {{ assignment.gradedByString() }}
+          </td>
+          <td class="control">
+            <a [href]="'/#/grade/' + assignment.id" *ngIf="assignment.isSubmitted() || assignment.isGraded()">
+              <button mat-raised-button color="primary" *ngIf="assignment.isSubmitted()">
+                Grade
+              </button>
+              <button mat-button color="primary" *ngIf="assignment.isPassed() || assignment.isFailed()">
+                Review
+              </button>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="controls controls-right">
+    <a href="/#/assign-quiz">
+      <button mat-raised-button color="primary">
+        Create New Assignment
+      </button>
+    </a>
+  </div>
+
+  <!--Accordion-->
+
+</mat-card>
+
+<ac-spinner *ngIf="dataSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isAssignmentDeleting$ | async"></ac-spinner>
+
+

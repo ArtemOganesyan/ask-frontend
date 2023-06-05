@@ -1,0 +1,18 @@
+@import "../../../../colors";
+
+mat-checkbox {
+  display: block;
+  margin: 0.5em 0 ;
+}
+
+
+div.ng-invalid.ng-dirty {
+  mat-checkbox {
+    color: $error;
+  }
+}
+
+mat-error {
+  font-size: 0.8em;
+}
+

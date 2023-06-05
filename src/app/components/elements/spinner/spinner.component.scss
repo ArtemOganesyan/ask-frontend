@@ -1,0 +1,29 @@
+@import "../../../../mixins";
+@import "../../../../../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
+
+:host {
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  z-index: 2;
+  @include background-opacity(white, 0.8);
+
+  mat-progress-spinner {
+    margin: 0 auto;
+  }
+
+  h4 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-top: 4em;
+    text-align: center;
+  }
+
+}

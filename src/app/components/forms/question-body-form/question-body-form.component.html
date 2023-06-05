@@ -1,0 +1,200 @@
+<div class="horizontal-group" [formGroup]="questionBodyForm">
+  <div class="left" [ngClass]="{'wide': questionBodyForm.get('type').value === null}">
+    <div class="wrapper">
+      <mat-radio-group formControlName="type" required>
+        <div class="label">
+          Question Type *
+        </div>
+        <mat-radio-button *ngFor="let option of questionTypeOptions" [value]="option.value">{{option.label}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div class="label points">
+        Points per question *
+      </div>
+      <h2 color="accent">{{questionBodyForm.get('score').value}}</h2>
+      <mat-slider
+        [max]="10"
+        [min]="1"
+        [value]="questionBodyForm.get('score').value"
+        (input)="questionBodyForm.get('score').setValue($event.value, {'emitEvent': true})">
+      </mat-slider>
+    </div>
+  </div>
+
+  <div class="right" [ngClass]="{'collapsed': questionBodyForm.get('type').value === null}">
+    <mat-form-field class="question">
+              <textarea
+                matInput
+                placeholder="Question *"
+                formControlName="question"
+                matTextareaAutosize
+                matAutosizeMinRows="1"
+                maxlength="1000"
+                [errorStateMatcher]="matcher"
+                #textOptionMessage
+              >
+              </textarea>
+
+      <mat-hint align="end">{{textOptionMessage.value.length}} / 1000</mat-hint>
+
+      <mat-error *ngIf="fh.hasError(questionBodyForm, 'question')">
+        {{fh.getError(questionBodyForm, 'question')}}
+      </mat-error>
+    </mat-form-field>
+
+    <!---------------------------------->
+    <!-- Options for Textual Question -->
+    <!---------------------------------->
+
+    <div class="options" *ngIf="isTextualQuestion()">
+      <div class="checkbox">
+        <mat-checkbox (change)="setShowStopper.next($event.checked)" [checked]="isShowStopper">
+          Is <span class="bold">"Show-Stopper"</span> question?
+        </mat-checkbox>
+      </div>
+    </div>
+
+    <!---------------------------------------->
+    <!-- Options for Single-Choice Question -->
+    <!---------------------------------------->
+
+    <div class="options"
+         formArrayName="options"
+         *ngIf="isSingleChoiceQuestion()">
+      <mat-radio-group [formControl]="questionBodyForm.get('answer')"
+                       class="option-row horizontal-group"
+                       *ngFor="let question of questionBodyForm.get('options').controls; let optionId = index"
+                       [formGroupName]="optionId">
+        <mat-radio-button [value]="optionId" [checked]="isOptionChecked(optionId)"></mat-radio-button>
+        <mat-form-field>
+                  <textarea matInput [placeholder]="'Option ' + (+optionId + 1) + '*'"
+                            formControlName="option"
+                            matTextareaAutosize matAutosizeMinRows="1"
+                            [errorStateMatcher]="matcher">
+                  </textarea>
+          <mat-error
+            *ngIf="fh.hasError(questionBodyForm.get('options').controls[optionId], 'option')">
+            {{fh.getError(questionBodyForm.get('options').controls[optionId], 'option')}}
+          </mat-error>
+        </mat-form-field>
+        <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">
+          <mat-icon>settings</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [disabled]="optionsCount() <= 2" (click)="deleteOption(optionId)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete Option</span>
+          </button>
+          <button mat-menu-item [disabled]="optionId == 0" (click)="moveOptionUp(optionId, 'radio')">
+            <mat-icon>arrow_upward</mat-icon>
+            <span>Move option up</span>
+          </button>
+          <button mat-menu-item [disabled]="optionId == (optionsCount() - 1)" (click)="moveOptionDown(optionId, 'radio')">
+            <mat-icon>arrow_downward</mat-icon>
+            <span>Move option down</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item>
+            <mat-icon>clear</mat-icon>
+            <span>Close Menu</span>
+          </button>
+        </mat-menu>
+      </mat-radio-group>
+
+      <div class="choice-error" *ngIf="fh.hasError(questionBodyForm, 'answer')">
+        *Choose correct answer
+      </div>
+
+      <div class="checkbox">
+        <mat-checkbox [formControl]="questionBodyForm.get('hasOtherOption')">
+          Include "Other" text area option for this question?
+        </mat-checkbox>
+      </div>
+
+      <div class="checkbox">
+        <mat-checkbox (change)="setShowStopper.next($event.checked)" [checked]="isShowStopper">
+          Is <span class="bold">"Show-Stopper"</span> question?
+        </mat-checkbox>
+      </div>
+
+      <div class="add-option" *ngIf="optionsLength < maxMultipleChoice">
+        <button mat-raised-button color="accent" (click)="addOption()">
+          Add Option
+        </button>
+      </div>
+    </div>
+
+    <!------------------------------------------>
+    <!-- Options for Multiple-Choice Question -->
+    <!------------------------------------------>
+
+    <div
+      class="options"
+      formArrayName="options"
+      *ngIf="isMultipleChoiceQuestion()"
+    >
+      <div
+        class="option-row horizontal-group"
+        *ngFor="let question of questionBodyForm.get('options').controls; let optionId = index"
+        [formGroupName]="optionId"
+      >
+        <mat-checkbox class="answer"
+                      (change)="setMultipleChoice($event, optionId)"
+                      [checked]="isChoiceSelected(optionId)">
+        </mat-checkbox>
+
+        <mat-form-field>
+                  <textarea matInput [placeholder]="'Option ' + (optionId + 1) + '*'"
+                            formControlName="option"
+                            matTextareaAutosize matAutosizeMinRows="1"
+                            [errorStateMatcher]="matcher">
+                  </textarea>
+          <mat-error
+            *ngIf="fh.hasError(questionBodyForm.get('options').controls[optionId], 'option')">
+            {{fh.getError(questionBodyForm.get('options').controls[optionId], 'option')}}
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-icon-button color="accent" [matMenuTriggerFor]="menu">
+          <mat-icon>settings</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [disabled]="optionsCount() <= 2" (click)="deleteOption(optionId)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete Option</span>
+          </button>
+          <button mat-menu-item [disabled]="optionId === 0" (click)="moveOptionUp(optionId, 'chbs')">
+            <mat-icon>arrow_upward</mat-icon>
+            <span>Move option up</span>
+          </button>
+          <button mat-menu-item [disabled]="optionId === (optionsCount() - 1)" (click)="moveOptionDown(optionId, 'chbs')">
+            <mat-icon>arrow_downward</mat-icon>
+            <span>Move option down</span>
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item>
+            <mat-icon>clear</mat-icon>
+            <span>Close Menu</span>
+          </button>
+        </mat-menu>
+      </div>
+
+      <div class="choice-error" *ngIf="fh.hasError(questionBodyForm, 'answers')">
+        *Choose at least one correct answer
+      </div>
+
+      <div class="checkbox">
+        <mat-checkbox [formControl]="questionBodyForm.get('hasOtherOption')">
+          Include "Other" text area option for this question?
+        </mat-checkbox>
+      </div>
+
+      <div class="add-option" *ngIf="optionsLength < maxMultipleChoice">
+        <button mat-raised-button color="accent" (click)="addOption()">
+          Add Option
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

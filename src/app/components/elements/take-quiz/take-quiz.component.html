@@ -1,0 +1,34 @@
+<h4>{{quiz.name}}</h4>
+<form [formGroup]="form">
+  <div class="questions" formArrayName="questions">
+    <mat-card *ngFor="let question of getQuestionsFormControls().controls; let questionId = index">
+      <h5>Question {{(questionId + 1)}} / {{quiz.questions.count()}}</h5>
+      <h3>{{quiz.questions.get(questionId).question}}</h3>
+      <p class="show-stopper" *ngIf="quiz.showStopperQuestion === questionId">Show-Stopper Question</p>
+      <ac-quiz-textual-question [questionForm]="form.controls.questions.controls[questionId]"
+                                [question]="quiz.questions.get(questionId)"
+                                [isPreview]="isPreview"
+                                [questionNumber]="questionId"
+                                [assignmentId]="assignmentId"
+                                *ngIf="quiz.questions.get(questionId).isTextual()"
+      ></ac-quiz-textual-question>
+      <ac-quiz-single-choice-question [questionForm]="form.controls.questions.controls[questionId]"
+                                      [question]="quiz.questions.get(questionId)"
+                                      [isPreview]="isPreview"
+                                      [questionNumber]="questionId"
+                                      [assignmentId]="assignmentId"
+                                      *ngIf="quiz.questions.get(questionId).isSingleChoice()"
+      ></ac-quiz-single-choice-question>
+      <ac-quiz-multiple-choice-question [questionForm]="form.controls.questions.controls[questionId]"
+                                        [question]="quiz.questions.get(questionId)"
+                                        [isPreview]="isPreview"
+                                        [questionNumber]="questionId"
+                                        [assignmentId]="assignmentId"
+                                        *ngIf="quiz.questions.get(questionId).isMultipleChoice()"
+      ></ac-quiz-multiple-choice-question>
+    </mat-card>
+  </div>
+  <div class="controls" *ngIf="!isPreview">
+    <button mat-raised-button color="primary" type="button" (click)="submit()">Submit My Answers</button>
+  </div>
+</form>

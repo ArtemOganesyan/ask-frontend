@@ -1,0 +1,30 @@
+<mat-card class="page">
+  <h4>My Assignments</h4>
+  <mat-divider></mat-divider>
+  <table>
+    <tr *ngFor="let assignment of studentSelectors.assignments$ | async">
+      <td>
+        {{ assignment.quiz.name }}
+      </td>
+      <td>
+        {{ assignment.quiz.questions.count() }} Questions
+      </td>
+      <td>
+        Assigned at: {{ assignment.createdMomentAsString }}
+      </td>
+      <td>
+        <a [href]="'/#/assessment/' + assignment.id">
+        <button mat-raised-button color="primary">Go To Assessment</button>
+        </a>
+      </td>
+    </tr>
+  </table>
+  <div class="empty-list" *ngIf="(studentSelectors.assignments$ | async).count() === 0">
+    You do not have any assignments at this moment
+  </div>
+</mat-card>
+
+
+<ac-spinner *ngIf="studentSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+
+

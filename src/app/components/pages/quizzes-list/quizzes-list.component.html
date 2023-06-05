@@ -1,0 +1,60 @@
+<mat-card class="page" *ngIf="!(dataSelectors.isQuizzesLoading$ | async)">
+  <h4>List of Quizzes</h4>
+  <div class="quizzes">
+    <mat-accordion [multi]="false">
+      <mat-expansion-panel *ngFor="let quiz of dataSelectors.quizzes$ | async">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{quiz.name}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{quiz.questions.count()}} Question(s)
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <div class="horizontal-group">
+          <table>
+            <tr>
+              <td>Total Questions:</td>
+              <td>{{quiz.questions.count()}}</td>
+            </tr>
+            <tr>
+              <td>Maximum possible score:</td>
+              <td>{{quiz.totalScore}}</td>
+            </tr>
+            <tr>
+              <td>Passing Percentage:</td>
+              <td>{{quiz.passingPercentage}}</td>
+            </tr>
+            <tr>
+              <td>Created At:</td>
+              <td>{{quiz.createdAtString()}}</td>
+            </tr>
+            <tr>
+              <td>Updated At:</td>
+              <td>{{quiz.updatedAtString()}}</td>
+            </tr>
+          </table>
+          <div class="buttons">
+            <button mat-raised-button color="primary" (click)="preview(quiz.id)" type="button">Preview</button>
+            <a [routerLink]="'/quiz-builder/' + quiz.id">
+              <button mat-raised-button color="primary" type="button">Edit</button>
+            </a>
+            <button mat-raised-button color="warn" (click)="deleteQuiz(quiz.id)" type="button">Delete</button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="controls">
+    <a routerLink="/quiz-builder">
+      <button mat-raised-button color="primary">Create New Quiz</button>
+    </a>
+  </div>
+</mat-card>
+<ac-spinner *ngIf="dataSelectors.isQuizzesLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isQuizDeleting$ | async"></ac-spinner>
+
+
+
+

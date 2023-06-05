@@ -1,0 +1,12 @@
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="side" [opened]="authSelectors.isAuthorized$ | async">
+    <ac-side-menu></ac-side-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main>
+      <div class="staging-label">Environment: {{environmentName}}</div>
+      <router-outlet #o="outlet"></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

@@ -1,0 +1,68 @@
+@import "../../../../colors";
+
+$size: 3em;
+
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  mat-list {
+    flex: 1;
+
+    a.mat-list-item, mat-list-item {
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    padding-left: 0.5em;
+
+
+    .icon {
+      height: $size;
+      width: $size;
+      line-height: $size;
+      flex: 0 0 $size;
+
+      mat-icon {
+        font-size: $size;
+      }
+    }
+
+    .info {
+      flex: 1;
+      overflow: hidden;
+      padding-left: 0.5em;
+
+      h3, p {
+        margin: 0.25em 0;
+      }
+
+      p {
+        font-size: 0.8em;
+        font-style: italic;
+        opacity: 0.5;
+      }
+    }
+
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.8em;
+    font-style: italic;
+    flex: 0 0 2em;
+    opacity: 0.5;
+  }
+}

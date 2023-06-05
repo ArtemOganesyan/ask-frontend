@@ -1,0 +1,89 @@
+@import "../../../../colors";
+@import "../../../../mixins";
+
+.quiz-name{
+  display: block;
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  max-width: 70em;
+  margin: 1.5em auto;
+  height: 100%;
+  min-width: 30em;
+
+  mat-accordion {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.25em;
+  }
+
+  .mat-expansion-panel-header {
+    /deep/ .mat-content {
+      align-items: center;
+    }
+
+    .mat-expansion-panel-header-title:nth-of-type(1) {
+      flex: 0 0 15em;
+    }
+
+    .mat-expansion-panel-header-title:nth-of-type(2) {
+      flex: 0 0 8em;
+    }
+
+    .mat-expansion-panel-header-title:last-of-type {
+      flex: 0 0 3em;
+    }
+  }
+
+  mat-divider {
+    position: relative;
+  }
+
+  table {
+    margin-top: 0.5em;
+    width: 100%;
+
+    th {
+      text-align: left;
+      color: $gray;
+      font-weight: 400;
+      padding-top: 1em;
+      font-size: 0.8em;
+    }
+
+    td:not(.control) {
+      padding: 0.75em 3em 0.75em 0;
+
+      &.group {
+        width: 4em;
+        padding-right: 1em;
+      }
+
+
+      &.status {
+        width: 15em;
+        color: $white;
+        font-weight: 800;
+
+        span {
+          padding: 0.25em 0.5em;
+          border-radius: 0.25em;
+        }
+      }
+
+      &.graded-by {
+        width: 8em;
+      }
+    }
+
+    td.control {
+      width: 6em;
+      padding-right: 0;
+    }
+  }
+}

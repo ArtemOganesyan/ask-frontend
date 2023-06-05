@@ -1,0 +1,11 @@
+@import "../../../../mixins";
+
+
+mat-card {
+  min-width: 20em;
+  max-width: 25em;
+  margin: 0 auto;
+  text-align: center;
+
+  @include success-icon();
+}

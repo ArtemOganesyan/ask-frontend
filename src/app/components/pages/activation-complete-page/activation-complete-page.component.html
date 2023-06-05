@@ -1,0 +1,33 @@
+<mat-card>
+  <h4 *ngIf="authSelectors.isActivationFetching$ | async">Activating your account...</h4>
+  <h4 *ngIf="authSelectors.isActivated$ | async">You Account was Activated!</h4>
+  <h4 *ngIf="authSelectors.getActivationErrorMessage$ | async">Something went wrong, we cannot Activate You Account</h4>
+  <div class="progress">
+    <div class="icon-wrapper" *ngIf="authSelectors.isActivated$ | async">
+      <mat-icon mat-list-icon>done</mat-icon>
+    </div>
+    <div class="icon-wrapper failure" *ngIf="authSelectors.getActivationErrorMessage$ | async">
+      <mat-icon mat-list-icon>error_outline</mat-icon>
+    </div>
+    <mat-progress-bar mode="indeterminate" *ngIf="authSelectors.isActivationFetching$ | async"></mat-progress-bar>
+  </div>
+  <p *ngIf="authSelectors.isActivationFetching$ | async">
+    Please, keep calm, we are activating your account... It should not take too long...
+  </p>
+  <p *ngIf="authSelectors.isActivated$ | async">
+    Success, now you can use the system!
+  </p>
+  <p *ngIf="authSelectors.getActivationErrorMessage$ | async">
+    Server Response:<br/>
+    {{authSelectors.getActivationErrorMessage$ | async}}
+  </p>
+  <div class="controls">
+    <button mat-raised-button color="primary" *ngIf="authSelectors.isActivated$ | async"
+            (click)="router.navigate(['/login'])">Login with Credentials
+    </button>
+    <button mat-raised-button *ngIf="authSelectors.getActivationErrorMessage$ | async"
+            (click)="router.navigate(['/login'])">Back
+    </button>
+  </div>
+</mat-card>
+

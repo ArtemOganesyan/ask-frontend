@@ -1,0 +1,25 @@
+<div [formGroup]="questionForm">
+  <mat-checkbox *ngFor="let option of question.options;let optionId=index"
+                (change)="toggle($event.checked, optionId)"
+                [checked]="questionForm.get('answers').value.has(optionId)">
+    {{option}}
+  </mat-checkbox>
+  <mat-error *ngIf="questionForm.invalid && questionForm.dirty">
+    This field is required
+  </mat-error>
+  <mat-form-field *ngIf="question.hasOtherOption">
+    <textarea matInput placeholder="Other"
+              formControlName="textAnswer"
+              matTextareaAutosize
+              matAutosizeMinRows="1"
+              [errorStateMatcher]="matcher"
+              acPasteDetection
+              [notCatch]="isPreview"
+              [questionNumber]="questionNumber"
+              [assignmentId]="assignmentId">
+    </textarea>
+    <mat-error *ngIf="fh.hasError(questionForm, 'textAnswer')">
+      {{fh.getError(questionForm, 'textAnswer')}}
+    </mat-error>
+  </mat-form-field>
+</div>

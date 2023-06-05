@@ -1,0 +1,21 @@
+mat-card {
+  text-align: center;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+
+  h3 {
+    margin: 0;
+  }
+
+  h5 {
+    margin: 0.5em 0 0;
+  }
+
+  .controls {
+    margin-top: 0;
+    button {
+      min-width: 2em;
+      padding: 0;
+    }
+  }
+}

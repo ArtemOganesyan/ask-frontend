@@ -1,0 +1,9 @@
+export enum LocalStorageKeys {
+  USER_ID = 'USER_ID',
+  USER_NAME = 'USER_NAME',
+  USER_EMAIL = 'USER_EMAIL',
+  USER_ROLE = 'USER_ROLE',
+  USER_AVATAR = 'USER_AVATAR',
+  TOKEN = 'TOKEN',
+  QUIZ = 'QUIZ'
+}

@@ -1,0 +1,82 @@
+@import "../../../../colors";
+
+.page {
+  display: flex;
+  flex-direction: column;
+  width: 30em;
+  margin: 0 auto;
+  max-height: 80%;
+  overflow: scroll;
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    .horizontal-group {
+      &.header {
+        flex: 0 0 2.5em;
+      }
+
+      h4 {
+        margin-top: 0;
+      }
+
+      h4.close {
+        flex: 0 0 3em;
+        text-align: right;
+      }
+
+      &.dropdowns {
+        flex: 0 0 3.5em;
+
+        *:first-of-type {
+          flex: 0 0 5em;
+
+          /deep/ .mat-input-wrapper {
+            width: 5em;
+          }
+        }
+      }
+
+      &.footer {
+        flex: 0 0 2.5em;
+      }
+    }
+
+    .students-error {
+      font-size: 0.8em;
+    }
+
+    mat-selection-list {
+      flex: 1;
+      overflow-y: auto;
+
+      /deep/ .mat-list-text {
+        flex-direction: row;
+        span {
+          width: 5em;
+        }
+      }
+
+    }
+
+    .controls {
+      margin-bottom: 0;
+    }
+
+    .horizontal-group.footer {
+      align-items: center;
+
+      h5 {
+        font-style: italic;
+        color: $gray;
+        font-weight: 400;
+        flex: 1;
+      }
+
+      div {
+        flex: 0;
+      }
+    }
+  }
+}

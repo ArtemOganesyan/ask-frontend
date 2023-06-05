@@ -1,0 +1,93 @@
+<form [formGroup]="form" *ngIf="form" novalidate>
+  <main [ngClass]="{ 'collapsed': isFormHaveQuestions()}">
+    <mat-card>
+      <div class="header-form-group">
+        <mat-form-field>
+          <input matInput placeholder="Title Of The Quiz *" formControlName="name">
+          <mat-error *ngIf="fh.hasError(form, 'name')">{{fh.getError(form, 'name')}}</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-card>
+    <mat-accordion [multi]="false" formArrayName="questions">
+      <mat-expansion-panel hideToggle="false"
+                           *ngFor="let question of form.get('questions').controls; let questionId = index"
+                           [expanded]="openedQuestion === questionId"
+                           (opened)="openedQuestion = questionId"
+                           (closed)="fh.markEachControlAsTouched(form.get('questions').controls[questionId])">
+        <mat-expansion-panel-header>
+          <mat-panel-title
+            [ngClass]="{'error': !form.controls.questions.controls[questionId].valid}">
+            {{getQuestionHeader(questionId)}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{form.controls.questions.controls[questionId].controls.score.value}} Point(s)
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <ac-question-body-form [questionBodyForm]="form.controls.questions.controls[questionId]"
+                               [isShowStopper]="isShowStopper(questionId)"
+                               (setShowStopper)="setShowStopper($event, questionId)"
+        ></ac-question-body-form>
+
+        <div class="padded">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div class="controls">
+          <button mat-button color="primary" (click)="deleteQuestion(questionId)" type="button">
+            Delete Question
+          </button>
+          <button mat-button color="primary" *ngIf="!(+questionId === 0)" (click)="moveQuestionUp(questionId)" type="button">
+            Move Question Up
+          </button>
+          <button mat-button color="primary" *ngIf="!(+questionId === (questionsCount() - 1))" type="button"
+                  (click)="moveQuestionDown(questionId)">
+            Move Question Down
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </main>
+
+  <ac-quiz-passing-percentage [ngClass]="{'show': isFormHaveQuestions()}" [maxPoints]="totalScore$ | async"
+                              formControlName="passingPercentage"></ac-quiz-passing-percentage>
+  <div class="controls" *ngIf="shouldShowAddQuestionButton()" [ngClass]="{'shift': isFormHaveQuestions()}">
+    <button mat-button color="primary" (click)="addQuestion()" type="button">
+      <mat-icon>add_circle</mat-icon>
+      Add Question
+    </button>
+  </div>
+</form>
+
+<div class="form-controls-container" *ngIf="form">
+  <div class="form-controls">
+    <div class="controls">
+      <!--<p>-->
+        <!--Valid:{{form.valid}}-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--Touched:{{form.touched}}-->
+      <!--</p>-->
+      <!--<p>-->
+        <!--Dirty:{{form.dirty}}-->
+      <!--</p>-->
+      <button mat-raised-button color="primary" *ngIf="isFormHaveQuestions()"
+              type="button" (click)="preview()">
+        Preview
+      </button>
+      <button mat-raised-button color="primary" *ngIf="isFormHaveQuestions()"
+              type="button" (click)="submit()">
+        Save
+      </button>
+      <a href="/#/quizzes">
+        <button mat-raised-button color="primary" type="button">
+          Back To Quizzes List
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<ac-spinner message="Saving..." *ngIf="dataSelectors.isQuizSaving$ | async"></ac-spinner>
+

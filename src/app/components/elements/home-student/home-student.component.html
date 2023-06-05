@@ -1,0 +1,29 @@
+<mat-card>
+  <h4>
+    <mat-icon>border_color</mat-icon>Assignments
+  </h4>
+  <p *ngIf="assignments.count() > 0">
+    You have <span class="bold">{{assignments.count()}}</span> new assignment(s).
+  </p>
+  <p *ngIf="assignments.count() === 0">
+    You do not have any assignments
+  </p>
+  <div class="controls">
+    <a href="/#/my-assignments"><button mat-button color="primary">Go To My Assignments</button></a>
+  </div>
+</mat-card>
+
+<mat-card>
+  <h4>
+    <mat-icon>offline_pin</mat-icon>Grades
+  </h4>
+  <p>
+    There are <span class="bold">{{gradedAssignments}}</span> graded assignment(s).
+    <span class="bold">{{grades.count() - gradedAssignments}}</span> was submitted,
+    but was(re) not reviewed by teacher yet.
+  </p>
+  <div class="controls">
+    <a href="/#/my-grades"><button mat-button color="primary">Go To My Grades</button></a>
+  </div>
+</mat-card>
+

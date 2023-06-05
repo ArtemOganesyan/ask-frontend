@@ -1,0 +1,102 @@
+<mat-card class="page" *ngIf="user$ | async">
+  <div class="horizontal-group">
+    <h2>
+      <mat-icon mat-list-icon *ngIf="(user$ | async).isStudent">school</mat-icon>
+      <img class="icon" src="../../../../assets/logo.png" *ngIf="(user$ | async).isTeacher">
+      {{(user$ | async).name}}
+    </h2>
+    <h4>
+      <a href="/#/users-management">
+        <mat-icon>close</mat-icon>
+      </a>
+    </h4>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="horizontal-group user-meta">
+    <div class="left">
+      <table>
+        <tr>
+          <td>User Role</td>
+          <td>{{(user$ | async).role}}</td>
+        </tr>
+        <tr *ngIf="(user$ | async).isStudent">
+          <td>Group</td>
+          <td>{{(user$ | async).group}}</td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td>{{(user$ | async).email}}</td>
+        </tr>
+        <tr>
+          <td>Registered</td>
+          <td>{{(user$ | async).createdAtString()}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="right">
+      <button mat-raised-button color="accent" [matMenuTriggerFor]="options">
+        <mat-icon>settings</mat-icon>Options
+      </button>
+      <mat-menu #options="matMenu">
+        <button mat-menu-item (click)="changeUserName()">
+          <mat-icon>edit</mat-icon>Change User's Name
+        </button>
+        <button mat-menu-item (click)="changeUserRole()">
+          <mat-icon>school</mat-icon>Change User's Role
+        </button>
+        <button mat-menu-item (click)="changeUserGroup()" *ngIf="(user$ | async).isStudent">
+          <mat-icon>group</mat-icon>Change User's Group
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="deleteUser()">
+          <mat-icon>delete</mat-icon>Delete User
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+  <mat-divider *ngIf="(user$ | async).isStudent"></mat-divider>
+  <div class="empty-assignments" *ngIf="(user$ | async).isStudent && (userAssignments$ | async).count() === 0">
+    No Assignments Yet
+  </div>
+  <div class="container">
+    <table *ngIf="(user$ | async).isStudent && (userAssignments$ | async).count() !== 0">
+      <tr>
+        <th>Submitted At</th>
+        <th>Graded At</th>
+        <th>Quiz</th>
+        <th>Status</th>
+        <th>Score</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let assignment of userAssignments$ | async">
+        <td>{{assignment.submittedTimAsString }}</td>
+        <td>{{assignment.gradedTimeAsString }}</td>
+        <td>{{assignment.quiz.name}}</td>
+        <td class="status">
+          <span [ngClass]="{'passed': assignment.isPassed(), 'failed': assignment.isFailed(), 'pending': assignment.isPending()} ">
+          {{assignment.result}}
+          </span>
+        </td>
+        <td>{{assignment.totalGradedPoints}} of {{assignment.quiz.totalScore}}</td>
+        <td class="control">
+          <a [href]="'/#/grade/' + assignment.id + '?back=user-details%2F' + (user$ | async).id"
+             *ngIf="assignment.isSubmitted() || assignment.isGraded()">
+            <button mat-button color="primary" *ngIf="!assignment.isPending()">
+              Review
+            </button>
+            <button mat-raised-button color="primary" *ngIf="assignment.isPending()">
+              Grade
+            </button>
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</mat-card>
+
+<ac-not-found-page *ngIf="!(dataSelectors.isUsersLoading$ | async) && !(user$ | async)"></ac-not-found-page>
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isUserSaving$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isUserDeleting$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isAssignmentsLoading$ | async"></ac-spinner>

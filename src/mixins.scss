@@ -1,0 +1,43 @@
+@mixin background-opacity($color, $opacity) {
+  background-color: rgba($color, $opacity);
+}
+
+
+@mixin success-icon() {
+  $size: 5em;
+  $offset: 0.5em;
+
+  .icon-wrapper {
+    @include background-opacity(green, 0.5);
+    padding: $offset;
+    width: $size + $offset;
+    height: $size + $offset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    border-radius: 50%;
+
+    &.failure {
+      @include background-opacity(red, 0.5);
+    }
+
+    mat-icon {
+
+      color: white;
+      font-size: $size;
+      width: $size;
+      height: $size;
+      line-height: $size;
+      box-sizing: border-box;
+    }
+  }
+}
+
+@mixin transition() {
+  transition: 0.25s all ease-in-out;
+}
+
+@mixin border() {
+  border: 1px solid $lightgray;
+}

@@ -1,0 +1,7 @@
+<div class="page" *ngIf="quiz$ | async">
+  <ac-take-quiz [quiz]="quiz$ | async" [isPreview]="false" [assignmentId]="assignmentId$ | async"
+                (submitForm)="submit($event)"></ac-take-quiz>
+</div>
+
+<ac-spinner *ngIf="studentSelectors.isAssignmentsLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="studentSelectors.isAssignmentsSubmitting$ | async"></ac-spinner>

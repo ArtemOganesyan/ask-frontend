@@ -1,0 +1,53 @@
+<mat-card class="page">
+  <form [formGroup]="form" *ngIf="form" (ngSubmit)="submit()">
+    <div class="horizontal-group header">
+      <h4>
+        Give Assignment
+      </h4>
+      <h4 class="close">
+        <a href="/#/assignments">
+          <mat-icon>close</mat-icon>
+        </a>
+      </h4>
+    </div>
+    <div class="horizontal-group dropdowns">
+      <mat-form-field>
+        <mat-select placeholder="Group Filter" formControlName="groupFilter">
+          <mat-option value="ALL">All</mat-option>
+          <mat-option *ngFor="let group of groups$ | async" [value]="group">{{group}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Select Quiz To Assign" formControlName="quizId">
+          <mat-option *ngFor="let quiz of quizzes" [value]="quiz.id">
+            {{ quiz.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="fh.hasError(form, 'quizId')">{{fh.getError(form, 'quizId')}}</mat-error>
+      </mat-form-field>
+    </div>
+    <mat-selection-list formControlName="selectedUsers">
+      <mat-list-option *ngFor="let student of selectedStudents" [value]="student.id">
+        <span>{{student.group}}</span>{{student.name}}
+      </mat-list-option>
+    </mat-selection-list>
+    <mat-error class="students-error"
+               *ngIf="isSubmitted && !form.get('selectedUsers').valid">Select at least one Student
+    </mat-error>
+    <div class="horizontal-group footer">
+      <h5>Total Selected Students: {{form.get('selectedUsers').value.length}}</h5>
+      <div>
+        <button mat-button color="accent" type="button" (click)="selectAll()">Select All</button>
+        <button mat-button color="primary" type="button" (click)="clearAll()">Clear</button>
+      </div>
+    </div>
+    <div class="controls">
+      <button mat-raised-button color="primary" type="submit">Give Assignment</button>
+    </div>
+  </form>
+</mat-card>
+
+<ac-spinner *ngIf="dataSelectors.isAssignmentSaving$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isQuizzesLoading$ | async"></ac-spinner>
+<ac-spinner *ngIf="dataSelectors.isUsersLoading$ | async"></ac-spinner>
+

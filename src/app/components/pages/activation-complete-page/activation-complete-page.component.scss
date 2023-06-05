@@ -1,0 +1,25 @@
+@import "../../../../mixins";
+
+mat-card {
+  min-width: 20em;
+  max-width: 20em;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  .progress {
+    flex: 0 0 10em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+    @include success-icon();
+
+    mat-progress-bar {
+      margin: 3.09375em 0 ;
+    }
+  }
+
+}
